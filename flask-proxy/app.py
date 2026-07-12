@@ -1,8 +1,8 @@
 from flask import Flask, request, Response
-import requests
+from flask_cors import CORS   
 
 app = Flask(__name__)
-
+CORS(app) 
 # Replace with your Google Apps Script Web App URL
 GAS_URL = "https://script.google.com/macros/s/AKfycbwbJedA3rIluoThDP3r17JbrotsKpEWqBCppgGhikuSQn1PCydVO_rMj3G0tI65I6NJLw/exec"
 

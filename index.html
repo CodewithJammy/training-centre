@@ -121,7 +121,7 @@ document.getElementById("contact-form").addEventListener("submit", function(e){
     headers: {
       "Content-Type": "application/json"   // <-- important!
     },
-    mode: 'no-cors' 
+    
     body: JSON.stringify(formData)
   })
   .then(res => res.text())

@@ -1,15 +1,19 @@
 from flask import Flask, request, Response
-from flask_cors import CORS   
+import requests
+from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app) 
-# Replace with your Google Apps Script Web App URL
+CORS(app)  # adds CORS headers automatically
+
+# Google Apps Script Web App URL
 GAS_URL = "https://script.google.com/macros/s/AKfycbwbJedA3rIluoThDP3r17JbrotsKpEWqBCppgGhikuSQn1PCydVO_rMj3G0tI65I6NJLw/exec"
 
 @app.route("/proxy", methods=["GET", "POST", "OPTIONS"])
 def proxy():
     if request.method == "OPTIONS":
+        # Explicit preflight response
         resp = Response()
+        resp.status_code = 200
         resp.headers["Access-Control-Allow-Origin"] = "*"
         resp.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
         resp.headers["Access-Control-Allow-Headers"] = "Content-Type"
@@ -22,10 +26,7 @@ def proxy():
 
     resp = Response(r.content, status=r.status_code, content_type=r.headers.get("Content-Type"))
     resp.headers["Access-Control-Allow-Origin"] = "*"
-    resp.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
-    resp.headers["Access-Control-Allow-Headers"] = "Content-Type"
     return resp
 
 if __name__ == "__main__":
     app.run(debug=True)
-

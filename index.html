@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Digital Literacy Training Centre</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+    header { background: #2c3e50; color: white; padding: 20px; text-align: center; }
+    nav { background: #34495e; padding: 10px; text-align: center; }
+    nav a { color: white; margin: 0 15px; text-decoration: none; }
+    section { padding: 20px; }
+    footer { background: #2c3e50; color: white; text-align: center; padding: 10px; }
+    .course-list { list-style: none; padding: 0; }
+    .course-list li { margin: 10px 0; }
+    form { max-width: 400px; margin: auto; background: #f4f4f4; padding: 20px; border-radius: 8px; }
+    form input, form textarea, form select { width: 100%; padding: 10px; margin: 8px 0; }
+    form button { background: #2c3e50; color: white; padding: 10px; border: none; cursor: pointer; }
+    form button:hover { background: #1a252f; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Welcome to My Training Centre</h1>
+    <p>Empowering Rural Youth with Digital Skills</p>
+  </header>
+
+  <nav>
+    <a href="#courses">Courses</a>
+    <a href="#register">Register</a>
+    <a href="#contact">Contact</a>
+  </nav>
+
+  <section id="courses">
+    <h2>Our Courses</h2>
+    <ul class="course-list">
+      <li>📘 Digital Literacy (CCC)</li>
+      <li>💻 Programming Basics (C, C++)</li>
+      <li>📊 O-Level Certification</li>
+      <li>🐍 Python for Data Engineering</li>
+      <li>🗄️ SQL & Database Management</li>
+      <li>📈 Excel for Data Analysis</li>
+    </ul>
+  </section>
+
+  <section id="register">
+    <h2>Student Registration</h2>
+    <form action="mailto:yourname@example.com" method="post" enctype="text/plain">
+      <label for="name">Full Name:</label>
+      <input type="text" id="name" name="name" required>
+
+      <label for="email">Email Address:</label>
+      <input type="email" id="email" name="email" required>
+
+      <label for="course">Select Course:</label>
+      <select id="course" name="course" required>
+        <option value="CCC">CCC</option>
+        <option value="O-Level">O-Level</option>
+        <option value="C++">C++</option>
+        <option value="Python">Python</option>
+        <option value="SQL">SQL</option>
+        <option value="Excel">Excel</option>
+      </select>
+
+      <label for="message">Message:</label>
+      <textarea id="message" name="message"></textarea>
+
+      <button type="submit">Submit Registration</button>
+    </form>
+    <p><small>Note: This form will open your email client to send details directly to us.</small></p>
+  </section>
+
+  <section id="contact">
+    <h2>Contact Us</h2>
+    <p>Interested in joining? Reach out via email:</p>
+    <p><a href="mailto:yourname@example.com">yourname@example.com</a></p>
+  </section>
+
+  <footer>
+    <p>&copy; 2026 Digital Literacy Training Centre</p>
+  </footer>
+</body>
+</html>

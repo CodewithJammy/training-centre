@@ -4,7 +4,7 @@ import requests
 app = Flask(__name__)
 
 # Replace with your Google Apps Script Web App URL
-GAS_URL = "https://script.google.com/macros/s/AKfycbyiPgdp-D5oxxsyn8l5v0Rxcx-hxUeRP0-c3DJPV0Dq0-m-mwNlkOW3P6gwy9INcBL25Q/exec"
+GAS_URL = "https://training-centre-proxy-hqhxcyfearcqayhw.centralindia-01.azurewebsites.net"
 
 @app.route("/proxy", methods=["GET", "POST", "OPTIONS"])
 def proxy():

@@ -43,20 +43,60 @@
   <a href="#register">Register</a>
   <a href="#contact">Contact</a>
   <!-- New Age Calculator link -->
-  <a href="#age" onclick="document.getElementById('ageSection').style.display='block'">
-    Know Your Age
-  </a>
+  <a href="javascript:void(0)" onclick="openAgePopup()">Know Your Age</a>
 </nav>
 
-<!-- Hidden Age Calculator Section -->
-<div id="ageSection" style="display:none; margin-top:20px;">
-  <label for="dob">Select your Date of Birth:</label>
-  <input type="date" id="dob">
-  <button onclick="calculateAge()">Calculate Age</button>
-  <p id="ageResult"></p>
+<!-- Popup Modal -->
+<div id="agePopup" class="popup">
+  <div class="popup-content">
+    <span class="close" onclick="closeAgePopup()">&times;</span>
+    <h2>Age Calculator</h2>
+    <label for="dob">Select your Date of Birth:</label>
+    <input type="date" id="dob">
+    <button onclick="calculateAge()">Calculate Age</button>
+    <p id="ageResult"></p>
+  </div>
 </div>
 
+<style>
+/* Popup background */
+.popup {
+  display: none; 
+  position: fixed; 
+  z-index: 1000; 
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0,0,0,0.5);
+}
+
+/* Popup box */
+.popup-content {
+  background: #fff;
+  width: 300px;
+  margin: 15% auto;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+/* Close button */
+.close {
+  float: right;
+  font-size: 24px;
+  cursor: pointer;
+}
+</style>
+
 <script>
+function openAgePopup() {
+  document.getElementById("agePopup").style.display = "block";
+}
+
+function closeAgePopup() {
+  document.getElementById("agePopup").style.display = "none";
+}
+
 function calculateAge() {
   const dobInput = document.getElementById("dob").value;
   if (!dobInput) {
@@ -73,7 +113,6 @@ function calculateAge() {
 
   if (days < 0) {
     months--;
-    // days in previous month
     const prevMonth = new Date(today.getFullYear(), today.getMonth(), 0);
     days += prevMonth.getDate();
   }
@@ -87,6 +126,7 @@ function calculateAge() {
     `Exact Age: ${years} years, ${months} months, ${days} days`;
 }
 </script>
+
 
 
   <section id="courses" style="display: flex; gap: 20px; align-items: flex-start;">

@@ -44,7 +44,9 @@
     <a href="#contact">Contact</a>
   </nav>
 
-  <section id="courses">
+  <section id="courses" style="display: flex; gap: 20px; align-items: flex-start;">
+  <!-- Left column: Courses -->
+  <div style="flex: 1;">
     <h2>Our Courses</h2>
     <ul class="course-list">
       <li>📘 Digital Literacy (CCC)</li>
@@ -54,7 +56,26 @@
       <li>🗄️ SQL & Database Management</li>
       <li>📈 Excel for Data Analysis</li>
     </ul>
-  </section>
+  </div>
+
+  <!-- Middle column: Gallery -->
+  <div style="flex: 1;">
+    <h2>Gallery</h2>
+    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
+      <img src="images/gallery1.jpg" alt="Training Session" style="width:100%; border-radius:8px;">
+      <img src="images/gallery2.jpg" alt="Students Learning" style="width:100%; border-radius:8px;">
+      <img src="images/gallery3.jpg" alt="Computer Lab" style="width:100%; border-radius:8px;">
+      <img src="images/gallery4.jpg" alt="Workshop" style="width:100%; border-radius:8px;">
+    </div>
+  </div>
+
+  <!-- Right column: About Me -->
+  <div style="flex: 1; text-align: center;">
+    <h2>About Me</h2>
+    <img src="images/admin.jpg" alt="Director Photo" style="width:120px; height:120px; border-radius:50%; margin-bottom:10px;">
+    <p>Hello, I’m Jamshed. Passionate about digital literacy and programming education, I run training sessions to empower students with practical IT skills. My goal is to make technology accessible and useful for everyone.</p>
+  </div>
+</section>
 
   <section id="register">
     <h2>Student Registration</h2>

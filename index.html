@@ -38,11 +38,56 @@
        style="height:100px;">
 </header>
 
-  <nav>
-    <a href="#courses">Courses</a>
-    <a href="#register">Register</a>
-    <a href="#contact">Contact</a>
-  </nav>
+<nav>
+  <a href="#courses">Courses</a>
+  <a href="#register">Register</a>
+  <a href="#contact">Contact</a>
+  <!-- New Age Calculator link -->
+  <a href="#age" onclick="document.getElementById('ageSection').style.display='block'">
+    Know Your Age
+  </a>
+</nav>
+
+<!-- Hidden Age Calculator Section -->
+<div id="ageSection" style="display:none; margin-top:20px;">
+  <label for="dob">Select your Date of Birth:</label>
+  <input type="date" id="dob">
+  <button onclick="calculateAge()">Calculate Age</button>
+  <p id="ageResult"></p>
+</div>
+
+<script>
+function calculateAge() {
+  const dobInput = document.getElementById("dob").value;
+  if (!dobInput) {
+    document.getElementById("ageResult").innerText = "Please select your DOB.";
+    return;
+  }
+
+  const dob = new Date(dobInput);
+  const today = new Date();
+
+  let years = today.getFullYear() - dob.getFullYear();
+  let months = today.getMonth() - dob.getMonth();
+  let days = today.getDate() - dob.getDate();
+
+  if (days < 0) {
+    months--;
+    // days in previous month
+    const prevMonth = new Date(today.getFullYear(), today.getMonth(), 0);
+    days += prevMonth.getDate();
+  }
+
+  if (months < 0) {
+    years--;
+    months += 12;
+  }
+
+  document.getElementById("ageResult").innerText =
+    `Exact Age: ${years} years, ${months} months, ${days} days`;
+}
+</script>
+
 
   <section id="courses" style="display: flex; gap: 20px; align-items: flex-start;">
   <!-- Left column: Courses -->

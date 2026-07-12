@@ -116,7 +116,7 @@ document.getElementById("contact-form").addEventListener("submit", function(e){
     message: document.getElementById("message").value
   };
 
-  fetch("https://training-centre-proxy-hqhxcyfearcqayhw.centralindia-01.azurewebsites.net", {
+  fetch("https://training-centre-proxy-hqhxcyfearcqayhw.centralindia-01.azurewebsites.net/proxy", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"   // <-- important!

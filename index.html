@@ -95,8 +95,11 @@ document.getElementById("contact-form").addEventListener("submit", function(e){
     message: document.getElementById("message").value
   };
 
-  fetch("https://script.google.com/macros/s/AKfycby3K7yAxwbSqbGtXpImOSu4lF6Noed82d4eOy2LWrpfIMDz36KXMfbwDsOPPnqKqES9Cg/exec", {   // replace with your /exec URL
+  fetch("https://script.google.com/macros/s/AKfycby3K7yAxwbSqbGtXpImOSu4lF6Noed82d4eOy2LWrpfIMDz36KXMfbwDsOPPnqKqES9Cg/exec", {
     method: "POST",
+    headers: {
+      "Content-Type": "application/json"   // <-- important!
+    },
     body: JSON.stringify(formData)
   })
   .then(res => res.text())
@@ -107,6 +110,7 @@ document.getElementById("contact-form").addEventListener("submit", function(e){
   .catch(err => alert("Error: " + err));
 });
 </script>
+
 
     <p><small>Note: This form will open your email client to send details directly to us.</small></p>
   </section>

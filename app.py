@@ -38,6 +38,10 @@ def proxy():
     resp.headers["Access-Control-Allow-Origin"] = "*"
     return resp
 
+@app.route("/ping", methods=["POST"])
+def ping():
+    return "POST works!"
+
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()  # Ensures ExamQuestions table exists

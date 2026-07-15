@@ -1,6 +1,20 @@
 from flask import Flask, request, Response
 import requests
 from flask_cors import CORS
+from flask import Flask
+from db_config import init_db, db
+from routes.admin_routes import admin_bp
+
+app = Flask(__name__)
+init_db(app)
+
+# Register the admin blueprint
+app.register_blueprint(admin_bp)
+
+if __name__ == "__main__":
+    with app.app_context():
+        db.create_all()  # Ensures ExamQuestions table exists
+    app.run(debug=True)
 
 app = Flask(__name__)
 CORS(app)  # adds CORS headers automatically

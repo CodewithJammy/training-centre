@@ -2,7 +2,7 @@ from flask import Flask, request, Response, render_template, redirect
 import requests
 from flask_cors import CORS
 
-from db_config import init_db, db
+from models.db_config import init_db, db
 from routes.admin_routes import admin_bp
 
 # Create Flask app once

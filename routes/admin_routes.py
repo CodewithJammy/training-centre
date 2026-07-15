@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request, redirect
-from models.exam_question import ExamQuestion, db
+from models.exam_question import ExamQuestion
+from models.db_config import db
 
 admin_bp = Blueprint("admin", __name__, url_prefix="/admin")
 

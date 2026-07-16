@@ -7,6 +7,13 @@ admin_bp = Blueprint("admin", __name__, url_prefix="/admin")
 @admin_bp.route("/add-question", methods=["GET", "POST"])
 def add_question():
     if request.method == "POST":
+        section = request.form["section"]
+        question_text = request.form.get("question_text")
+
+        # Pre-check for duplicates
+        existing = ExamQuestion.query.filter_by(Section=section, QuestionText=question_text).first()
+        if existing:
+            return jsonify({"error": f"Duplicate: question already exists in section {section}"}), 400
         q = ExamQuestion(
             Section=request.form["section"],
             QuestionText=request.form.get("question_text"),

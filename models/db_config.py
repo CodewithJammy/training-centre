@@ -1,13 +1,16 @@
-from flask_sqlalchemy import SQLAlchemy
+import urllib
+from sqlalchemy import create_engine
 
-db = SQLAlchemy()
+connection_string = (
+    "Driver={ODBC Driver 18 for SQL Server};"
+    "Server=tcp:questionbank777.database.windows.net,1433;"
+    "Database=questionBank;"
+    "Uid=CloudSA2ff8cbc8;"
+    "Pwd=Cyber@#12345;"
+    "Encrypt=yes;"
+    "TrustServerCertificate=no;"
+    "Connection Timeout=30;"
+)
 
-def init_db(app):
-    # Azure SQL connection string with Entra Integrated Authentication
-    app.config['SQLALCHEMY_DATABASE_URI'] = (
-        "mssql+pyodbc://@questionbank777.database.windows.net/questionBank"
-        "?driver=ODBC+Driver+18+for+SQL+Server&authentication=ActiveDirectoryIntegrated"
-    )
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    db.init_app(app)
-    return db
+params = urllib.parse.quote_plus(connection_string)
+engine = create_engine("mssql+pyodbc:///?odbc_connect=" + params)

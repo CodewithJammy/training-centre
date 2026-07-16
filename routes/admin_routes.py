@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect
+from flask import Blueprint, render_template, request, redirect,jsonify
 from models.exam_questions import ExamQuestion
 from models.db_config import db
 

@@ -1,16 +1,13 @@
-import urllib
-from sqlalchemy import create_engine
+# models/db_config.py
+from flask_sqlalchemy import SQLAlchemy
 
-connection_string = (
-    "Driver={ODBC Driver 18 for SQL Server};"
-    "Server=tcp:questionbank777.database.windows.net,1433;"
-    "Database=questionBank;"
-    "Uid=CloudSA2ff8cbc8;"
-    "Pwd=Cyber@#12345;"
-    "Encrypt=yes;"
-    "TrustServerCertificate=no;"
-    "Connection Timeout=30;"
-)
+db = SQLAlchemy()
 
-params = urllib.parse.quote_plus(connection_string)
-engine = create_engine("mssql+pyodbc:///?odbc_connect=" + params)
+def init_db(app):
+    app.config['SQLALCHEMY_DATABASE_URI'] = (
+        "mssql+pyodbc://CloudSA2ff8cbc8:Cyber@#12345@questionbank777.database.windows.net:1433/questionBank"
+        "?driver=ODBC+Driver+18+for+SQL+Server&Encrypt=yes&TrustServerCertificate=no"
+    )
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+    db.init_app(app)

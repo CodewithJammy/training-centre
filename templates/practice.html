@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Exam Practice Portal</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; background: #f4f4f4; }
+    header, footer { background: #004080; color: white; text-align: center; padding: 5px; }
+    .container { display: flex; }
+    nav, aside { background: #e6e6e6; padding: 15px; }
+    nav { width: 15%; border-right: 1px solid #ccc; }
+    main { width: 70%; padding: 20px; background: white; }
+    aside { width: 15%; border-left: 1px solid #ccc; }
+    .question { margin-bottom: 20px; }
+    .options label { display: block; margin: 5px 0; }
+    .palette button {
+      margin: 3px;
+      padding: 5px 10px;
+      border: none;
+      background: #004080;
+      color: white;
+      cursor: pointer;
+    }
+    .palette button.active { background: orange; }
+  </style>
+</head>
+<body>
+  <header>
+    <h3>Exam Practice Portal</h3>
+    <p>Mock Test based on TCS iON model</p>
+  </header>
+
+  <div class="container">
+    <nav>
+      <h3>Sections</h3>
+      <ul>
+        <li><button onclick="loadSection('quant')">Quantitative Aptitude</button></li>
+        <li><button onclick="loadSection('logical')">Logical Reasoning</button></li>
+        <li><button onclick="loadSection('verbal')">Verbal Ability</button></li>
+        <li><button onclick="loadSection('coding')">Coding</button></li>
+      </ul>
+    </nav>
+
+    <main id="questionArea">
+      <h3>Select a section to begin</h3>
+    </main>
+
+    <aside>
+      <h3>Exam Info</h3>
+      <p>Candidate: Jamshed</p>
+      <p>Remaining Time: <span style="color:red;">01:45:30</span></p>
+      <h4>Question Palette</h4>
+      <div id="palette" class="palette"></div>
+    </aside>
+  </div>
+
+  <footer>
+    © 2026 Exam Practice | Powered by TCS-style layout
+  </footer>
+<script>
+  const sectionCounts = {
+    coding: 5,
+    quant: 10,
+    logical: 8,
+    verbal: 6
+  };
+
+  const sections = {};
+  for (let section in sectionCounts) {
+    const count = sectionCounts[section];
+    sections[section] = Array.from({ length: count }, (_, i) => `Q${i + 1}`);
+  }
+
+  let currentSection = null;
+  let currentIndex = 0;
+
+  function loadSection(section) {
+    currentSection = section;
+    currentIndex = 0;
+    const palette = document.getElementById('palette');
+    const questionArea = document.getElementById('questionArea');
+    palette.innerHTML = '';
+    questionArea.innerHTML = `<h3>${section.toUpperCase()} Section</h3>`;
+    sections[section].forEach((q, i) => {
+      const btn = document.createElement('button');
+      btn.textContent = i + 1;
+      btn.onclick = () => showQuestion(section, i);
+      palette.appendChild(btn);
+    });
+    showQuestion(section, 0); // load first question
+  }
+
+  function showQuestion(section, index) {
+    currentSection = section;
+    currentIndex = index;
+    const questionArea = document.getElementById('questionArea');
+    questionArea.innerHTML = `
+      <div class="question">
+        <h3>${sections[section][index]}</h3>
+        <div class="options">
+          <label><input type="radio" name="q${index}"> Option A</label>
+          <label><input type="radio" name="q${index}"> Option B</label>
+          <label><input type="radio" name="q${index}"> Option C</label>
+          <label><input type="radio" name="q${index}"> Option D</label>
+        </div>
+      </div>
+      <button onclick="saveAndNext()">Save & Next</button>
+      <button onclick="markForReview()">Mark for Review</button>
+    `;
+  }
+
+  function saveAndNext() {
+    if (currentIndex < sections[currentSection].length - 1) {
+      showQuestion(currentSection, currentIndex + 1);
+    } else {
+      alert("End of section reached!");
+    }
+  }
+
+  function markForReview() {
+    const palette = document.getElementById('palette').children;
+    palette[currentIndex].style.background = "orange"; // mark visually
+    saveAndNext();
+  }
+</script>
+
+</body>
+</html>

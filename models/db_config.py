@@ -5,7 +5,7 @@ db = SQLAlchemy()
 
 def init_db(app):
     app.config['SQLALCHEMY_DATABASE_URI'] = (
-        "mssql+pyodbc://CloudSA2ff8cbc8:Cyber@#12345@questionbank777.database.windows.net:1433/questionBank"
+        "mssql+pyodbc://CloudSA2ff8cbc8:Cyber%40%2312345@questionbank777.database.windows.net:1433/questionBank"
         "?driver=ODBC+Driver+18+for+SQL+Server&Encrypt=yes&TrustServerCertificate=no"
     )
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False

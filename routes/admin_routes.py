@@ -20,17 +20,17 @@ def login():
             # ✅ Email format check
             email_pattern = r"^[\w\.-]+@[\w\.-]+\.\w+$"
             if not re.match(email_pattern, user.email):
-                return render_template("login.html", error="Invalid email format")
+                return render_template("index.html", error="Invalid email format")
 
             # ✅ Mobile check (India default: +91 and 10 digits)
             mobile_pattern = r"^\+91\d{10}$"
             if not re.match(mobile_pattern, user.mobile):
-                return render_template("login.html", error="Invalid mobile number (must be +91XXXXXXXXXX)")
+                return render_template("index.html", error="Invalid mobile number (must be +91XXXXXXXXXX)")
 
             session["admin_user"] = username
-            return redirect(url_for("admin.list_questions"))
+            return redirect(url_for("admin.exam_questions"))
         else:
-            return render_template("login.html", error="Invalid credentials")
+            return render_template("index.html", error="Invalid credentials")
 
     return render_template("login.html")
 

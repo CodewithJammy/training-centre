@@ -28,7 +28,7 @@ def login():
                 return render_template("index.html", error="Invalid mobile number (must be +91XXXXXXXXXX)")
 
             session["admin_user"] = username
-            return redirect(url_for("admin.exam_questions"))
+            return redirect(url_for("admin.add_questions"))
         else:
             return render_template("index.html", error="Invalid credentials")
 

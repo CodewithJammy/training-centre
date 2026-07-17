@@ -73,13 +73,3 @@ def add_question():
     return render_template("admin_form.html")
 
 # --- LIST QUESTIONS ---
-@admin_bp.route("/list")
-def list_questions():
-    if "admin_user" not in session:
-        return redirect(url_for("admin.login"))
-    questions = ExamQuestion.query.all()
-    return render_template("admin_list.html", questions=questions)
-#-------------------------------------------------
-
-    questions = ExamQuestion.query.all()
-    return render_template("admin_list.html", questions=questions)

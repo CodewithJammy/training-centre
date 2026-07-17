@@ -28,11 +28,11 @@ def login():
                 return render_template("index.html", error="Invalid mobile number (must be +91XXXXXXXXXX)")
 
             session["admin_user"] = username
-            return redirect(url_for("admin.add_questions"))
+            return redirect(url_for("admin.add-questions"))
         else:
             return render_template("index.html", error="Invalid credentials")
 
-    return render_template("login.html")
+    return render_template("admin_form.html")
 
 # --- ADD QUESTION ---
 @admin_bp.route("/add-question", methods=["GET", "POST"])

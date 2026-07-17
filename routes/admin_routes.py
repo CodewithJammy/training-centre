@@ -38,7 +38,7 @@ def login():
 @admin_bp.route("/add-question", methods=["GET", "POST"])
 def add_question():
     if "admin_user" not in session:
-        return redirect(url_for(""https://exambank.azurewebsites.net/admin/login""))
+        return redirect(url_for("https://exambank.azurewebsites.net/admin/login"))
 
     if request.method == "POST":
         section = request.form["section"]

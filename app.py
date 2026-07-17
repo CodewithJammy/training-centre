@@ -15,9 +15,9 @@ init_db(app)
 # Register the admin blueprint
 app.register_blueprint(admin_bp)
 
-@app.route("/hello")
-def hello():
-    return "Hello from Flask!"
+@app.route("/")
+def index():
+    return render_template("index.html")
 
 # Google Apps Script Web App URL
 GAS_URL = "https://script.google.com/macros/s/AKfycbwbJedA3rIluoThDP3r17JbrotsKpEWqBCppgGhikuSQn1PCydVO_rMj3G0tI65I6NJLw/exec"

@@ -37,6 +37,7 @@ def login():
 # --- ADD QUESTION ---
 @admin_bp.route("/add-question", methods=["GET", "POST"])
 def add_question():
+    print("Request method:", request.method, "Path:", request.path)
     if "admin_user" not in session:
         return redirect(url_for("admin.login"))
 

@@ -32,7 +32,7 @@ def login():
         else:
             return render_template("index.html", error="Invalid credentials")
 
-    return render_template("admin_form.html")
+    return render_template("login.html")
 
 # --- ADD QUESTION ---
 @admin_bp.route("/add-question", methods=["GET", "POST"])

@@ -22,8 +22,8 @@ def get_questions(section):
     "logical": "Logical Reasoning",
     "verbal": "Verbal Ability",
     "coding": "Coding"
-}
-db_section = section_map.get(section, section)
+     }
+    db_section = section_map.get(section, section)
     try:
         conn = get_connection()
         cursor = conn.cursor()

@@ -2,7 +2,7 @@ from flask import Flask, request, Response, render_template, redirect
 # import requests
 import os
 from flask_cors import CORS
-
+from routes.exam_routes  import exam_bp
 from models.db_config import get_connection
 from routes.admin_routes import admin_bp
 

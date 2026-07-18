@@ -1,9 +1,13 @@
 import os
-from flask_sqlalchemy import SQLAlchemy
+import pyodbc
 
-db = SQLAlchemy()
+def get_connection():
+    # Read connection string from Azure App Service settings
+    database_url = os.getenv("DATABASE_URL")
 
-def init_db(app):
-    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("db_url")
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    db.init_app(app)
+    if not database_url:
+        raise RuntimeError("DATABASE_URL is not set in App Service configuration")
+
+    # Connect directly with pyodbc
+    conn = pyodbc.connect(database_url)
+    return conn

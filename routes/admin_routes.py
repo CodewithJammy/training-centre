@@ -25,7 +25,7 @@ def login():
             logging.debug(f"Database lookup → user={user}")
         except Exception as e:
             logging.error(f"Database connection failed: {e}")
-            return render_template("login.html", error="Database error")
+            return render_template("index.html", error="Database error")
         if user and check_password_hash(user.password, password):
             # ✅ Email format check
             # email_pattern = r"^[\w\.-]+@[\w\.-]+\.\w+$"
@@ -40,9 +40,9 @@ def login():
             session["admin_user"] = username
             return redirect(url_for("admin.add_question"))
         else:
-            return render_template("login.html", error="Invalid credentials")
+            return render_template("index.html", error="Invalid credentials")
 
-    return render_template("login.html")
+    return render_template("index.html")
 
 # --- ADD QUESTION ---
 @admin_bp.route("/add-question", methods=["GET", "POST"])

@@ -1,17 +1,17 @@
-from .db_config import get_connection
+from models.db_config import get_connection
 
-class ExamQuestion(get_connection.Model):
-    __tablename__ = 'ExamQuestions'
-    QuestionID = db.Column(db.Integer, primary_key=True)
-    Section = db.Column(db.String(50), nullable=False)
-    QuestionText = db.Column(db.Text)
-    QuestionImage = db.Column(db.String(500))
-    OptionAText = db.Column(db.String(255))
-    OptionAImage = db.Column(db.String(500))
-    OptionBText = db.Column(db.String(255))
-    OptionBImage = db.Column(db.String(500))
-    OptionCText = db.Column(db.String(255))
-    OptionCImage = db.Column(db.String(500))
-    OptionDText = db.Column(db.String(255))
-    OptionDImage = db.Column(db.String(500))
-    CorrectOption = db.Column(db.String(1), nullable=False)
+def get_all_questions():
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT QuestionID, Section, QuestionText, CorrectOption FROM ExamQuestions")
+    rows = cursor.fetchall()
+    conn.close()
+    return rows
+
+def get_question_by_id(question_id):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM ExamQuestions WHERE QuestionID=?", (question_id,))
+    row = cursor.fetchone()
+    conn.close()
+    return row

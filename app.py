@@ -1,5 +1,5 @@
 from flask import Flask, request, Response, render_template, redirect
-import requests
+# import requests
 from flask_cors import CORS
 
 from models.db_config import get_connection

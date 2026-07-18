@@ -91,7 +91,7 @@
         // showQuestion(0);
       });
   }
-
+ /*
   function showQuestion(index) {
     currentIndex = index;
     const q = sectionQuestions[index];
@@ -117,6 +117,36 @@
       <button onclick="markForReview()">Mark for Review</button>
     `;
   }
+  */
+  function showQuestion(index) {
+  currentIndex = index;
+  const q = sectionQuestions[index];
+  const questionArea = document.getElementById('questionArea');
+
+  // look up saved answer
+  const savedAnswer = userResponses[currentSection]?.[q.id];
+
+  let optionsHtml = "";
+  for (const [key, opt] of Object.entries(q.options)) {
+    const checked = savedAnswer === key ? "checked" : "";
+    optionsHtml += `<label>
+      <input type="radio" name="q${q.id}" value="${key}" ${checked}
+             onchange="saveResponse('${currentSection}', ${q.id}, '${key}')"> 
+      ${opt.text ? opt.text : ""}
+      ${opt.image ? `<img src="/static/images/${opt.image}" alt="Option ${key}" style="max-width:150px;">` : ""}
+    </label>`;
+  }
+
+  questionArea.innerHTML = `
+    <div class="question">
+      <h3>${q.text ? q.text : ""}</h3>
+      ${q.image ? `<img src="/static/images/${q.image}" alt="Question Image" style="max-width:300px;">` : ""}
+      <div class="options">${optionsHtml}</div>
+    </div>
+    <button onclick="saveAndNext()">Save & Next</button>
+    <button onclick="markForReview()">Mark for Review</button>
+  `;
+}
 
   function saveResponse(section, qid, option) {
     if (!userResponses[section]) {

@@ -44,6 +44,20 @@ def get_questions(section):
         questions = []
         for row in rows:
             questions.append({
+                "id": row[0],
+                "text": row[1],
+                "image": row[2],
+                "options": {
+                    "A": {"text": row[3], "image": row[4]},
+                    "B": {"text": row[5], "image": row[6]},
+                    "C": {"text": row[7], "image": row[8]},
+                    "D": {"text": row[9], "image": row[10]},
+                },
+                "correct": row[11]
+            })
+
+     """ for row in rows:
+            questions.append({
                 "id": row.QuestionID,
                 "text": row.QuestionText,
                 "image": row.QuestionImage,
@@ -54,7 +68,7 @@ def get_questions(section):
                     "D": {"text": row.OptionDText, "image": row.OptionDImage},
                 },
                 "correct": row.CorrectOption
-            })
+            })"""
 
         return jsonify({"section": section, "questions": questions})
 

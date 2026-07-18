@@ -98,4 +98,93 @@ def add_question():
             conn.close()
             return render_template("admin_form.html", error=f"Database error: {e}")
 
+
+@admin_bp.route("/list", methods=["GET"])
+def list_questions():
+    if "admin_user" not in session:
+        # Require login first
+        return redirect(url_for("admin.login"))
+
+    try:
+        conn = get_connection()
+        cursor = conn.cursor()
+
+        # Fetch all questions
+        cursor.execute("""
+            SELECT QuestionID, Section, QuestionText, QuestionImage,
+                   OptionAText, OptionAImage,
+                   OptionBText, OptionBImage,
+                   OptionCText, OptionCImage,
+                   OptionDText, OptionDImage,
+                   CorrectOption
+            FROM ExamQuestions
+        """)
+        rows = cursor.fetchall()
+        conn.close()
+
+        # Pass rows to template
+        return render_template("questions.html", questions=rows)
+
+    except Exception as e:
+        return render_template("questions.html", error=f"Database error: {e}")
+
+
+
+    @admin_bp.route("/edit-question/<int:qid>", methods=["GET", "POST"])
+def edit_question(qid):
+    if "admin_user" not in session:
+        return redirect(url_for("admin.login"))
+
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    if request.method == "POST":
+        # Update with new values
+        cursor.execute("""
+            UPDATE ExamQuestions
+            SET Section=?, QuestionText=?, QuestionImage=?,
+                OptionAText=?, OptionAImage=?,
+                OptionBText=?, OptionBImage=?,
+                OptionCText=?, OptionCImage=?,
+                OptionDText=?, OptionDImage=?,
+                CorrectOption=?
+            WHERE QuestionID=?
+        """, (
+            request.form.get("section"),
+            request.form.get("question_text"),
+            request.form.get("question_image"),
+            request.form.get("option_a_text"),
+            request.form.get("option_a_image"),
+            request.form.get("option_b_text"),
+            request.form.get("option_b_image"),
+            request.form.get("option_c_text"),
+            request.form.get("option_c_image"),
+            request.form.get("option_d_text"),
+            request.form.get("option_d_image"),
+            request.form.get("correct_option"),
+            qid
+        ))
+        conn.commit()
+        conn.close()
+        return redirect(url_for("admin.list_questions"))
+
+    # GET → fetch existing record
+    cursor.execute("""
+        SELECT QuestionID, Section, QuestionText, QuestionImage,
+               OptionAText, OptionAImage,
+               OptionBText, OptionBImage,
+               OptionCText, OptionCImage,
+               OptionDText, OptionDImage,
+               CorrectOption
+        FROM ExamQuestions WHERE QuestionID=?
+    """, (qid,))
+    question = cursor.fetchone()
+    conn.close()
+
+    return render_template("edit_question.html", question=question)
+
+
+
+    
+
     return render_template("admin_form.html")

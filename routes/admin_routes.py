@@ -89,7 +89,7 @@ def add_question():
 
             conn.commit()
             conn.close()
-            return redirect("/admin/list")
+            return redirect(url_for("admin.list_questions"))
 
         except Exception as e:
             conn.rollback()

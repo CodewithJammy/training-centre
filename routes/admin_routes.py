@@ -18,14 +18,14 @@ def login():
         user = UserLogin.query.filter_by(username=username).first()
         if user and check_password_hash(user.password, password):
             # ✅ Email format check
-            email_pattern = r"^[\w\.-]+@[\w\.-]+\.\w+$"
-            if not re.match(email_pattern, user.email):
-                return render_template("login.html", error="Invalid email format")
+            # email_pattern = r"^[\w\.-]+@[\w\.-]+\.\w+$"
+            # if not re.match(email_pattern, user.email):
+             #   return render_template("login.html", error="Invalid email format")
 
             # ✅ Mobile check (India default: +91 and 10 digits)
-            mobile_pattern = r"^\+91\d{10}$"
-            if not re.match(mobile_pattern, user.mobile):
-                return render_template("login.html", error="Invalid mobile number (must be +91XXXXXXXXXX)")
+            # mobile_pattern = r"^\+91\d{10}$"
+            # if not re.match(mobile_pattern, user.mobile):
+            #    return render_template("login.html", error="Invalid mobile number (must be +91XXXXXXXXXX)")
 
             session["admin_user"] = username
             return redirect(url_for("admin.add_question"))

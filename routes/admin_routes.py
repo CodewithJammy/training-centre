@@ -129,7 +129,7 @@ def list_questions():
         return render_template("currentquestionafterload.html", error=f"Database error: {e}")
 
 
-    @admin_bp.route("/edit-question/<int:qid>", methods=["GET", "POST"])
+@admin_bp.route("/edit-question/<int:qid>", methods=["GET", "POST"])
 def edit_question(qid):
     if "admin_user" not in session:
         return redirect(url_for("admin.login"))

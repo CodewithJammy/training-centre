@@ -1,5 +1,5 @@
 import logging
-from flask import Blueprint, render_template, request, session, redirect, url_for
+from flask import Blueprint, render_template, request, session, redirect, url_for,jsonify
 from models.db_config import get_connection
 
 # Create blueprint

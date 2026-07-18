@@ -38,6 +38,9 @@ def login():
 
 # --- ADD QUESTION ---
 @admin_bp.route("/add-question", methods=["GET", "POST"])
+from flask import request, redirect, url_for, render_template, session
+from models.db_config import get_connection
+
 def add_question():
     print("Request method:", request.method, "Path:", request.path)
     if "admin_user" not in session:
@@ -47,32 +50,53 @@ def add_question():
         section = request.form["section"]
         question_text = request.form.get("question_text")
 
-        existing = ExamQuestion.query.filter_by(Section=section, QuestionText=question_text).first()
-        if existing:
-            return render_template("admin_form.html", error=f"Duplicate question in section {section}")
-
-        q = ExamQuestion(
-            Section=section,
-            QuestionText=question_text,
-            QuestionImage=request.form.get("question_image"),
-            OptionAText=request.form.get("option_a_text"),
-            OptionAImage=request.form.get("option_a_image"),
-            OptionBText=request.form.get("option_b_text"),
-            OptionBImage=request.form.get("option_b_image"),
-            OptionCText=request.form.get("option_c_text"),
-            OptionCImage=request.form.get("option_c_image"),
-            OptionDText=request.form.get("option_d_text"),
-            OptionDImage=request.form.get("option_d_image"),
-            CorrectOption=request.form["correct_option"]
-        )
         try:
-            db.session.add(q)
-            db.session.commit()
+            conn = get_connection()
+            cursor = conn.cursor()
+
+            # Check for duplicate
+            cursor.execute(
+                "SELECT 1 FROM ExamQuestions WHERE Section=? AND QuestionText=?",
+                (section, question_text)
+            )
+            existing = cursor.fetchone()
+            if existing:
+                conn.close()
+                return render_template("admin_form.html", error=f"Duplicate question in section {section}")
+
+            # Insert new question
+            cursor.execute("""
+                INSERT INTO ExamQuestions
+                (Section, QuestionText, QuestionImage,
+                 OptionAText, OptionAImage,
+                 OptionBText, OptionBImage,
+                 OptionCText, OptionCImage,
+                 OptionDText, OptionDImage,
+                 CorrectOption)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """, (
+                section,
+                question_text,
+                request.form.get("question_image"),
+                request.form.get("option_a_text"),
+                request.form.get("option_a_image"),
+                request.form.get("option_b_text"),
+                request.form.get("option_b_image"),
+                request.form.get("option_c_text"),
+                request.form.get("option_c_image"),
+                request.form.get("option_d_text"),
+                request.form.get("option_d_image"),
+                request.form["correct_option"]
+            ))
+
+            conn.commit()
+            conn.close()
             return redirect("/admin/list")
-        except IntegrityError:
-            db.session.rollback()
-            return render_template("admin_form.html", error="Duplicate entry detected")
+
+        except Exception as e:
+            # Rollback if error
+            conn.rollback()
+            conn.close()
+            return render_template("admin_form.html", error=f"Database error: {e}")
 
     return render_template("admin_form.html")
-
-# --- LIST QUESTIONS ---

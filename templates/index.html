@@ -55,7 +55,7 @@
   <div class="popup-content">
     <span class="close" onclick="closeLoginPopup()">&times;</span>
     <h2>Admin Login</h2>
-    <form method="POST" action="https://exambank.azurewebsites.net/admin/login">
+    <form method="POST" action="{{ url_for('admin.login') }}">
       {% if error %}
         <p style="color:red;">{{ error }}</p>
       {% endif %}

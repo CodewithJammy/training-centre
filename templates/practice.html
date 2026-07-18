@@ -70,6 +70,7 @@
     fetch(`/exam/questions/${section}`)
       .then(res => res.json())
       .then(data => {
+        console.log("Fetched questions:", data);
         sectionQuestions = data.questions;
         const palette = document.getElementById('palette');
         const questionArea = document.getElementById('questionArea');

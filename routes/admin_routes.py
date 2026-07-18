@@ -1,4 +1,5 @@
 import re
+import logging
 from flask import Blueprint, render_template, request, redirect, url_for, session
 from models.exam_questions import ExamQuestion
 from models.user_login import UserLogin
@@ -10,12 +11,21 @@ admin_bp = Blueprint("admin", __name__, url_prefix="/admin")
 
 # --- LOGIN ---
 @admin_bp.route("/login", methods=["GET", "POST"])
+
+
 def login():
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
+       
+        logging.debug(f"Form submitted → username={username}, password={password}")
 
-        user = UserLogin.query.filter_by(username=username).first()
+        try:
+            user = UserLogin.query.filter_by(username=username).first()
+            logging.debug(f"Database lookup → user={user}")
+        except Exception as e:
+            logging.error(f"Database connection failed: {e}")
+            return render_template("login.html", error="Database error")
         if user and check_password_hash(user.password, password):
             # ✅ Email format check
             # email_pattern = r"^[\w\.-]+@[\w\.-]+\.\w+$"

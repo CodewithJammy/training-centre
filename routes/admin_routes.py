@@ -67,11 +67,11 @@ def add_question():
             cursor.execute("""
                 INSERT INTO ExamQuestions
                 (Section, QuestionText, QuestionImage,
-                 OptionAText, OptionAImage,
-                 OptionBText, OptionBImage,
-                 OptionCText, OptionCImage,
-                 OptionDText, OptionDImage,
-                 CorrectOption)
+                OptionAText, OptionAImage,
+                OptionBText, OptionBImage,
+                OptionCText, OptionCImage,
+                OptionDText, OptionDImage,
+                CorrectOption)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """, (
                 section,
@@ -112,11 +112,11 @@ def list_questions():
         # Fetch all questions
         cursor.execute("""
             SELECT QuestionID, Section, QuestionText, QuestionImage,
-                   OptionAText, OptionAImage,
-                   OptionBText, OptionBImage,
-                   OptionCText, OptionCImage,
-                   OptionDText, OptionDImage,
-                   CorrectOption
+                    OptionAText, OptionAImage,
+                    OptionBText, OptionBImage,
+                    OptionCText, OptionCImage,
+                    OptionDText, OptionDImage,
+                    CorrectOption
             FROM ExamQuestions
         """)
         rows = cursor.fetchall()
@@ -127,7 +127,6 @@ def list_questions():
 
     except Exception as e:
         return render_template("currentquestionafterload.html", error=f"Database error: {e}")
-
 
 
     @admin_bp.route("/edit-question/<int:qid>", methods=["GET", "POST"])
@@ -171,11 +170,11 @@ def edit_question(qid):
     # GET → fetch existing record
     cursor.execute("""
         SELECT QuestionID, Section, QuestionText, QuestionImage,
-               OptionAText, OptionAImage,
-               OptionBText, OptionBImage,
-               OptionCText, OptionCImage,
-               OptionDText, OptionDImage,
-               CorrectOption
+                OptionAText, OptionAImage,
+                OptionBText, OptionBImage,
+                OptionCText, OptionCImage,
+                OptionDText, OptionDImage,
+                CorrectOption
         FROM ExamQuestions WHERE QuestionID=?
     """, (qid,))
     question = cursor.fetchone()
@@ -183,8 +182,5 @@ def edit_question(qid):
 
     return render_template("edit_question.html", question=question)
 
-
-
-    
 
     return render_template("admin_form.html")

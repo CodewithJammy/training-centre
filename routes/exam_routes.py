@@ -15,15 +15,14 @@ def exam_home():
     return render_template("practice.html")  # your HTML page
 
 # --- Load Questions by Section ---
-@exam_bp.route("/section/<string:section>", methods=["GET"])
-def load_section(section):
+@exam_bp.route("/questions/<string:section>", methods=["GET"])
+def get_questions(section):
     try:
         conn = get_connection()
         cursor = conn.cursor()
 
-        # Fetch questions for the given section
         cursor.execute("""
-            SELECT QuestionID, Section, QuestionText, QuestionImage,
+            SELECT QuestionID, QuestionText, QuestionImage,
                    OptionAText, OptionAImage,
                    OptionBText, OptionBImage,
                    OptionCText, OptionCImage,
@@ -35,12 +34,25 @@ def load_section(section):
         rows = cursor.fetchall()
         conn.close()
 
-        # Pass questions to template
-        return render_template("exam_section.html", section=section, questions=rows)
+        questions = []
+        for row in rows:
+            questions.append({
+                "id": row.QuestionID,
+                "text": row.QuestionText,
+                "image": row.QuestionImage,
+                "options": {
+                    "A": {"text": row.OptionAText, "image": row.OptionAImage},
+                    "B": {"text": row.OptionBText, "image": row.OptionBImage},
+                    "C": {"text": row.OptionCText, "image": row.OptionCImage},
+                    "D": {"text": row.OptionDText, "image": row.OptionDImage},
+                },
+                "correct": row.CorrectOption
+            })
+
+        return jsonify({"section": section, "questions": questions})
 
     except Exception as e:
-        logging.error(f"Error loading section {section}: {e}")
-        return render_template("exam_section.html", section=section, error=f"Database error: {e}")
+        return jsonify({"error": str(e)})
 
 # --- Submit Answer ---
 @exam_bp.route("/submit/<int:qid>", methods=["POST"])

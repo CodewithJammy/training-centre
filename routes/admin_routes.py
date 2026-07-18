@@ -11,28 +11,30 @@ admin_bp = Blueprint("admin", __name__, url_prefix="/admin")
 # --- LOGIN ---
 @admin_bp.route("/login", methods=["GET", "POST"])
 
-
 def login():
-    username = request.form["username"]
-    password = request.form["password"]
+    if request.method == "POST":
+        username = request.form.get("username")
+        password = request.form.get("password")
 
-    try:
-        conn = get_connection()
-        cursor = conn.cursor()
+        try:
+            conn = get_connection()
+            cursor = conn.cursor()
 
-        # Run query safely with parameters
-        cursor.execute("SELECT * FROM dbo.UserLogin WHERE username=? AND password=?", (username, password))
-        row = cursor.fetchone()
-        conn.close()
+            # Adjust table name/schema to match your DB
+            cursor.execute("SELECT * FROM dbo.UserLogin WHERE username=? AND password=?", (username, password))
+            row = cursor.fetchone()
+            conn.close()
 
-        if row:
-            # Successful login → redirect to dashboard
-            return redirect(url_for("admin.add_question"))
-        else:
-            # Failed login → show error on index.html
-            return render_template("index.html", error="Invalid credentials")
-    except Exception as e:
-        return render_template("index.html", error=f"Database error: {e}")
+            if row:
+                session["admin_user"] = username  # mark logged in
+                return redirect(url_for("admin.add_question"))
+            else:
+                return render_template("index.html", error="Invalid credentials")
+        except Exception as e:
+            return render_template("index.html", error=f"Database error: {e}")
+    else:
+        # GET request → just show the login page
+        return render_template("index.html")
 
 
 # --- ADD QUESTION ---

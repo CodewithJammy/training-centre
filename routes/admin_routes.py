@@ -3,7 +3,7 @@ import logging
 from flask import Blueprint, render_template, request, redirect, url_for, session
 from models.exam_questions import ExamQuestion
 from models.user_login import UserLogin
-from models.db_config import db
+from models.db_config import get_connection
 from werkzeug.security import check_password_hash
 from sqlalchemy.exc import IntegrityError
 
@@ -14,35 +14,27 @@ admin_bp = Blueprint("admin", __name__, url_prefix="/admin")
 
 
 def login():
-    if request.method == "POST":
-        username = request.form["username"]
-        password = request.form["password"]
-       
-        logging.debug(f"Form submitted → username={username}, password={password}")
+    username = request.form["username"]
+    password = request.form["password"]
 
-        try:
-            user = UserLogin.query.filter_by(username=username).first()
-            logging.debug(f"Database lookup → user={user}")
-        except Exception as e:
-            logging.error(f"Database connection failed: {e}")
-            return render_template("index.html", error="Database error")
-        if user and check_password_hash(user.password, password):
-            # ✅ Email format check
-            # email_pattern = r"^[\w\.-]+@[\w\.-]+\.\w+$"
-            # if not re.match(email_pattern, user.email):
-             #   return render_template("login.html", error="Invalid email format")
+    try:
+        conn = get_connection()
+        cursor = conn.cursor()
 
-            # ✅ Mobile check (India default: +91 and 10 digits)
-            # mobile_pattern = r"^\+91\d{10}$"
-            # if not re.match(mobile_pattern, user.mobile):
-            #    return render_template("login.html", error="Invalid mobile number (must be +91XXXXXXXXXX)")
+        # Run query safely with parameters
+        cursor.execute("SELECT * FROM users WHERE username=? AND password=?", (username, password))
+        row = cursor.fetchone()
+        conn.close()
 
-            session["admin_user"] = username
+        if row:
+            # Successful login → redirect to dashboard
             return redirect(url_for("admin.add_question"))
         else:
+            # Failed login → show error on index.html
             return render_template("index.html", error="Invalid credentials")
+    except Exception as e:
+        return render_template("index.html", error=f"Database error: {e}")
 
-    return render_template("index.html")
 
 # --- ADD QUESTION ---
 @admin_bp.route("/add-question", methods=["GET", "POST"])

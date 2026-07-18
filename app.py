@@ -1,5 +1,6 @@
 from flask import Flask, request, Response, render_template, redirect
 # import requests
+import os
 from flask_cors import CORS
 
 from models.db_config import get_connection
@@ -11,6 +12,10 @@ CORS(app)  # adds CORS headers automatically
 
 # Initialize DB
 # init_db(app)
+
+
+app.secret_key = os.getenv("FLASK_SECRET_KEY")
+
 
 # Register the admin blueprint
 app.register_blueprint(admin_bp)

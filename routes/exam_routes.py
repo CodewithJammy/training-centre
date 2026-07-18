@@ -12,7 +12,7 @@ def exam_home():
         # If you want only logged-in users to access exam
         return redirect(url_for("admin.login"))
 
-    return render_template("exam.html")  # your HTML page
+    return render_template("practice.html")  # your HTML page
 
 # --- Load Questions by Section ---
 @exam_bp.route("/section/<string:section>", methods=["GET"])

@@ -39,7 +39,6 @@ def login():
 
 # --- ADD QUESTION ---
 @admin_bp.route("/add-question", methods=["GET", "POST"])
-
 def add_question():
     print("Request method:", request.method, "Path:", request.path)
     if "admin_user" not in session:
@@ -67,11 +66,11 @@ def add_question():
             cursor.execute("""
                 INSERT INTO ExamQuestions
                 (Section, QuestionText, QuestionImage,
-                OptionAText, OptionAImage,
-                OptionBText, OptionBImage,
-                OptionCText, OptionCImage,
-                OptionDText, OptionDImage,
-                CorrectOption)
+                 OptionAText, OptionAImage,
+                 OptionBText, OptionBImage,
+                 OptionCText, OptionCImage,
+                 OptionDText, OptionDImage,
+                 CorrectOption)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """, (
                 section,
@@ -93,11 +92,12 @@ def add_question():
             return redirect("/admin/list")
 
         except Exception as e:
-            # Rollback if error
             conn.rollback()
             conn.close()
             return render_template("admin_form.html", error=f"Database error: {e}")
-   return render_template("admin_form.html")
+
+    # This must be aligned with the function, not inside try/except
+    return render_template("admin_form.html")
 
 @admin_bp.route("/list", methods=["GET"])
 def list_questions():

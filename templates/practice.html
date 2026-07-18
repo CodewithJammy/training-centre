@@ -101,10 +101,10 @@
     for (const [key, opt] of Object.entries(q.options)) {
       optionsHtml += `<label>
         <input type="radio" name="q${q.id}" value="${key}" 
-               onchange="saveResponse(${q.id}, '${key}')"> 
+           onchange="saveResponse('${currentSection}', ${q.id}, '${key}')"> 
         ${opt.text ? opt.text : ""}
-        ${opt.image ? `<img src="/static/images/${opt.image}" alt="Option ${key}" style="max-width:150px;">` : ""}
-      </label>`;
+          ${opt.image ? `<img src="/static/images/${opt.image}" alt="Option ${key}" style="max-width:150px;">` : ""}
+        </label>`;
     }
 
     questionArea.innerHTML = `
@@ -118,12 +118,22 @@
     `;
   }
 
-  function saveResponse(qid, option) {
+  function saveResponse(section, qid, option) {
+    if (!userResponses[section]) {
+      userResponses[section] = {};
+    }
+    userResponses[section][qid] = option;
+
+  // mark palette button green when answered
+    const paletteBtn = document.getElementById('palette').children[currentIndex];
+    paletteBtn.style.background = "green";
+    }
+ /* function saveResponse(qid, option) {
     userResponses[qid] = option;
     // mark palette button green when answered
     const paletteBtn = document.getElementById('palette').children[currentIndex];
     paletteBtn.style.background = "green";
-  }
+  }*/
 
   function saveAndNext() {
     if (currentIndex < sectionQuestions.length - 1) {

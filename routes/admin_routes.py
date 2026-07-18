@@ -1,11 +1,10 @@
 import re
 import logging
 from flask import Blueprint, render_template, request, redirect, url_for, session
-from models.exam_questions import ExamQuestion
-from models.user_login import UserLogin
 from models.db_config import get_connection
 from werkzeug.security import check_password_hash
-from sqlalchemy.exc import IntegrityError
+from models.exam_questions import get_all_questions, get_question_by_id
+
 
 admin_bp = Blueprint("admin", __name__, url_prefix="/admin")
 

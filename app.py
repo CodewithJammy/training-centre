@@ -19,7 +19,7 @@ app.secret_key = os.getenv("FLASK_SECRET_KEY")
 
 # Register the admin blueprint
 app.register_blueprint(admin_bp)
-
+app.register_blueprint(exam_bp)
 @app.route("/")
 def index():
     return render_template("index.html")

@@ -24,8 +24,7 @@
 </head>
 <body>
   <h2 style="text-align:center;">Exam Questions</h2>
-   <form method="GET" action="{{ url_for('admin.add_question') }}">
-      <button type="submit" class="edit-btn">Edit</button>
+  <a href="{{ url_for('admin.add_question') }}" class="edit-btn">Back to Add Question</a>
   {% if error %}
     <p style="color:red; text-align:center;">{{ error }}</p>
   {% endif %}

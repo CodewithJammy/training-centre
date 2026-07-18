@@ -56,20 +56,6 @@ def get_questions(section):
                 "correct": row[11]
             })
 
-     """ for row in rows:
-            questions.append({
-                "id": row.QuestionID,
-                "text": row.QuestionText,
-                "image": row.QuestionImage,
-                "options": {
-                    "A": {"text": row.OptionAText, "image": row.OptionAImage},
-                    "B": {"text": row.OptionBText, "image": row.OptionBImage},
-                    "C": {"text": row.OptionCText, "image": row.OptionCImage},
-                    "D": {"text": row.OptionDText, "image": row.OptionDImage},
-                },
-                "correct": row.CorrectOption
-            })"""
-
         return jsonify({"section": section, "questions": questions})
 
     except Exception as e:

@@ -89,8 +89,36 @@
     });
     showQuestion(section, 0); // load first question
   }
+  
+  function showQuestion(index) {
+    currentIndex = index;
+    const q = sectionQuestions[index];
+    const questionArea = document.getElementById('questionArea');
 
-  function showQuestion(section, index) {
+    let optionsHtml = "";
+    for (const [key, opt] of Object.entries(q.options)) {
+      optionsHtml += `<label>
+        <input type="radio" name="q${q.id}" value="${key}"> 
+        ${opt.text ? opt.text : ""}
+        ${opt.image ? `<img src="/static/images/${opt.image}" alt="Option ${key}" style="max-width:150px;">` : ""}
+      </label>`;
+    }
+
+    questionArea.innerHTML = `
+      <div class="question">
+        <h3>${q.text}</h3>
+        ${q.image ? `<img src="/static/images/${q.image}" alt="Question Image" style="max-width:300px;">` : ""}
+        <div class="options">
+          ${optionsHtml}
+        </div>
+      </div>
+      <button onclick="saveAndNext()">Save & Next</button>
+      <button onclick="markForReview()">Mark for Review</button>
+    `;
+  }
+
+
+/*  function showQuestion(section, index) {
     currentSection = section;
     currentIndex = index;
     const questionArea = document.getElementById('questionArea');
@@ -107,7 +135,7 @@
       <button onclick="saveAndNext()">Save & Next</button>
       <button onclick="markForReview()">Mark for Review</button>
     `;
-  }
+  }  */
 
   function saveAndNext() {
     if (currentIndex < sections[currentSection].length - 1) {

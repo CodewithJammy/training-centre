@@ -97,7 +97,7 @@ def add_question():
             conn.rollback()
             conn.close()
             return render_template("admin_form.html", error=f"Database error: {e}")
-
+   return render_template("admin_form.html")
 
 @admin_bp.route("/list", methods=["GET"])
 def list_questions():
@@ -183,4 +183,4 @@ def edit_question(qid):
     return render_template("edit_question.html", question=question)
 
 
-    return render_template("admin_form.html")
+ 

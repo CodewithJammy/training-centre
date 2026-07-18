@@ -21,7 +21,7 @@ def login():
         cursor = conn.cursor()
 
         # Run query safely with parameters
-        cursor.execute("SELECT * FROM users WHERE username=? AND password=?", (username, password))
+        cursor.execute("SELECT * FROM dbo.UserLogin WHERE username=? AND password=?", (username, password))
         row = cursor.fetchone()
         conn.close()
 

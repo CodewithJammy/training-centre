@@ -123,10 +123,10 @@ def list_questions():
         conn.close()
 
         # Pass rows to template
-        return render_template("questions.html", questions=rows)
+        return render_template("currentquestionafterload.html", questions=rows)
 
     except Exception as e:
-        return render_template("questions.html", error=f"Database error: {e}")
+        return render_template("currentquestionafterload.html", error=f"Database error: {e}")
 
 
 

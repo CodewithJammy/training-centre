@@ -10,7 +10,7 @@ app = Flask(__name__)
 CORS(app)  # adds CORS headers automatically
 
 # Initialize DB
-init_db(app)
+# init_db(app)
 
 # Register the admin blueprint
 app.register_blueprint(admin_bp)

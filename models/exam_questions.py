@@ -1,6 +1,6 @@
-from .db_config import db
+from .db_config import get_connection
 
-class ExamQuestion(db.Model):
+class ExamQuestion(get_connection.Model):
     __tablename__ = 'ExamQuestions'
     QuestionID = db.Column(db.Integer, primary_key=True)
     Section = db.Column(db.String(50), nullable=False)

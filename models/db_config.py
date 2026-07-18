@@ -1,5 +1,6 @@
 # models/db_config.py
 from flask_sqlalchemy import SQLAlchemy
+import urllib.parse 
 
 db = SQLAlchemy()
 

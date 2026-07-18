@@ -58,38 +58,35 @@
     © 2026 Exam Practice | Powered by codewithjammy
   </footer>
 <script>
-  const sectionCounts = {
-    coding: 5,
-    quant: 10,
-    logical: 8,
-    verbal: 6
-  };
-
-  const sections = {};
-  for (let section in sectionCounts) {
-    const count = sectionCounts[section];
-    sections[section] = Array.from({ length: count }, (_, i) => `Q${i + 1}`);
-  }
-
   let currentSection = null;
   let currentIndex = 0;
+  let sectionQuestions = [];
+  let userResponses = {};
 
   function loadSection(section) {
     currentSection = section;
     currentIndex = 0;
-    const palette = document.getElementById('palette');
-    const questionArea = document.getElementById('questionArea');
-    palette.innerHTML = '';
-    questionArea.innerHTML = `<h3>${section.toUpperCase()} Section</h3>`;
-    sections[section].forEach((q, i) => {
-      const btn = document.createElement('button');
-      btn.textContent = i + 1;
-      btn.onclick = () => showQuestion(section, i);
-      palette.appendChild(btn);
-    });
-    showQuestion(section, 0); // load first question
+
+    fetch(`/exam/questions/${section}`)
+      .then(res => res.json())
+      .then(data => {
+        sectionQuestions = data.questions;
+        const palette = document.getElementById('palette');
+        const questionArea = document.getElementById('questionArea');
+        palette.innerHTML = '';
+        questionArea.innerHTML = `<h3>${section.toUpperCase()} Section</h3>`;
+
+        sectionQuestions.forEach((q, i) => {
+          const btn = document.createElement('button');
+          btn.textContent = i + 1;
+          btn.onclick = () => showQuestion(i);
+          palette.appendChild(btn);
+        });
+
+        showQuestion(0);
+      });
   }
-  
+
   function showQuestion(index) {
     currentIndex = index;
     const q = sectionQuestions[index];
@@ -98,7 +95,8 @@
     let optionsHtml = "";
     for (const [key, opt] of Object.entries(q.options)) {
       optionsHtml += `<label>
-        <input type="radio" name="q${q.id}" value="${key}"> 
+        <input type="radio" name="q${q.id}" value="${key}" 
+               onchange="saveResponse(${q.id}, '${key}')"> 
         ${opt.text ? opt.text : ""}
         ${opt.image ? `<img src="/static/images/${opt.image}" alt="Option ${key}" style="max-width:150px;">` : ""}
       </label>`;
@@ -106,51 +104,37 @@
 
     questionArea.innerHTML = `
       <div class="question">
-        <h3>${q.text}</h3>
+        <h3>${q.text ? q.text : ""}</h3>
         ${q.image ? `<img src="/static/images/${q.image}" alt="Question Image" style="max-width:300px;">` : ""}
-        <div class="options">
-          ${optionsHtml}
-        </div>
+        <div class="options">${optionsHtml}</div>
       </div>
       <button onclick="saveAndNext()">Save & Next</button>
       <button onclick="markForReview()">Mark for Review</button>
     `;
   }
 
-
-/*  function showQuestion(section, index) {
-    currentSection = section;
-    currentIndex = index;
-    const questionArea = document.getElementById('questionArea');
-    questionArea.innerHTML = `
-      <div class="question">
-        <h3>${sections[section][index]}</h3>
-        <div class="options">
-          <label><input type="radio" name="q${index}"> Option A</label>
-          <label><input type="radio" name="q${index}"> Option B</label>
-          <label><input type="radio" name="q${index}"> Option C</label>
-          <label><input type="radio" name="q${index}"> Option D</label>
-        </div>
-      </div>
-      <button onclick="saveAndNext()">Save & Next</button>
-      <button onclick="markForReview()">Mark for Review</button>
-    `;
-  }  */
+  function saveResponse(qid, option) {
+    userResponses[qid] = option;
+    // mark palette button green when answered
+    const paletteBtn = document.getElementById('palette').children[currentIndex];
+    paletteBtn.style.background = "green";
+  }
 
   function saveAndNext() {
-    if (currentIndex < sections[currentSection].length - 1) {
-      showQuestion(currentSection, currentIndex + 1);
+    if (currentIndex < sectionQuestions.length - 1) {
+      showQuestion(currentIndex + 1);
     } else {
       alert("End of section reached!");
     }
   }
 
   function markForReview() {
-    const palette = document.getElementById('palette').children;
-    palette[currentIndex].style.background = "orange"; // mark visually
+    const paletteBtn = document.getElementById('palette').children[currentIndex];
+    paletteBtn.style.background = "orange";
     saveAndNext();
   }
 </script>
+
 
 </body>
 </html>

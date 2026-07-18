@@ -17,6 +17,13 @@ def exam_home():
 # --- Load Questions by Section ---
 @exam_bp.route("/questions/<string:section>", methods=["GET"])
 def get_questions(section):
+    section_map = {
+    "quant": "Quantitative Aptitude",
+    "logical": "Logical Reasoning",
+    "verbal": "Verbal Ability",
+    "coding": "Coding"
+}
+db_section = section_map.get(section, section)
     try:
         conn = get_connection()
         cursor = conn.cursor()
@@ -30,7 +37,7 @@ def get_questions(section):
                    CorrectOption
             FROM ExamQuestions
             WHERE Section = ?
-        """, (section,))
+        """, (db_section,))
         rows = cursor.fetchall()
         conn.close()
 

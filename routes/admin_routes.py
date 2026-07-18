@@ -37,8 +37,6 @@ def login():
 
 # --- ADD QUESTION ---
 @admin_bp.route("/add-question", methods=["GET", "POST"])
-from flask import request, redirect, url_for, render_template, session
-from models.db_config import get_connection
 
 def add_question():
     print("Request method:", request.method, "Path:", request.path)

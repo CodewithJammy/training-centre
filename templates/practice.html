@@ -83,8 +83,12 @@
           btn.onclick = () => showQuestion(i);
           palette.appendChild(btn);
         });
-
-        showQuestion(0);
+        if (sectionQuestions.length > 0) {
+            showQuestion(0);
+        } else {
+            questionArea.innerHTML += "<p>No questions found for this section.</p>";
+        }
+        // showQuestion(0);
       });
   }
 

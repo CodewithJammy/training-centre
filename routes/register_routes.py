@@ -26,3 +26,22 @@ def register():
     conn.close()
 
     return f"Hello {fullname}, you are registered successfully! Payment pending."
+
+
+
+ @register_bp.route('/exam-login', methods=['POST'])
+ def exam_login():
+    email = request.form['email']
+    course = request.form['course']
+
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM Subscriber WHERE username=? AND course=?", (email, course))
+    row = cursor.fetchone()
+    conn.close()
+
+    if row:
+        return {"success": True}
+    else:
+        return {"success": False, "error": "No registered user for this course. Please register first."}
+

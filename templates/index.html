@@ -124,7 +124,7 @@
            const result = await response.json();
            if (result.success) {
                 window.location.href = "{{ url_for('exam.exam_home') }}";  // redirect if match} 
-           else {
+           } else {
                 alert(result.error);  // show error popup
               } });
 

@@ -3,7 +3,7 @@ from flask import Flask, request
 from models.db_config import get_connection
 app = Flask(__name__)
 
-
+register_bp = Blueprint("userregister", __name__, url_prefix="/user")
 @app.route('/register', methods=['POST'])
 def register():
     fullname = request.form['name']

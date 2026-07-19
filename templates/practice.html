@@ -47,10 +47,13 @@
 
     <aside>
       <h3>Exam Info</h3>
-      <p>Candidate: Jamshed</p>
-      <p>Remaining Time: <span style="color:red;">01:45:30</span></p>
+      <div id="userInfo">
+    <!-- Will be populated dynamically -->
+      </div>
+      <p>Remaining Time: <span id="remainingTime" style="color:red;"></span></p>
       <h4>Question Palette</h4>
       <div id="palette" class="palette"></div>
+      <button id="finishBtn" onclick="finishExam()" disabled>Finish Exam</button>
     </aside>
   </div>
 
@@ -173,11 +176,90 @@
     }
   }
 
-  function markForReview() {
-    const paletteBtn = document.getElementById('palette').children[currentIndex];
-    paletteBtn.style.background = "orange";
-    saveAndNext();
+ let markedQuestions = new Set();
+
+function markForReview() {
+  markedQuestions.add(currentIndex); // store the index
+  updatePalette();
+  saveAndNext();
+}
+
+function updatePalette() {
+  const paletteBtns = document.getElementById('palette').children;
+  for (let i = 0; i < paletteBtns.length; i++) {
+    if (markedQuestions.has(i)) {
+      paletteBtns[i].style.background = "orange";
+    } else {
+      paletteBtns[i].style.background = ""; // reset if not marked
+    }
   }
+}
+
+  let examDuration = 0;       // in minutes, fetched from DB
+  let examStartTime = null;
+  let timerInterval = null;
+
+  // Fetch user info + exam details at page load
+  window.onload = function() {
+    Promise.all([
+      fetch('/exam/userinfo').then(res => res.json()),
+      fetch('/exam/details').then(res => res.json())
+    ]).then(([user, exam]) => {
+      // User info
+      document.getElementById('userInfo').innerHTML = `
+        <p>Candidate: ${user.username}</p>
+        <img src="${user.pic}" alt="Profile Pic" style="width:60px;height:60px;border-radius:50%;">
+      `;
+
+      // Exam details
+      examDuration = exam.duration; // e.g. 60 minutes
+      examStartTime = Date.now();
+      startTimer();
+    });
+  };
+
+  function startTimer() {
+    const remainingTimeEl = document.getElementById('remainingTime');
+    timerInterval = setInterval(() => {
+      const elapsed = Math.floor((Date.now() - examStartTime) / 1000); // seconds
+      const remaining = examDuration * 60 - elapsed;
+
+      if (remaining <= 0) {
+        clearInterval(timerInterval);
+        remainingTimeEl.textContent = "00:00:00";
+        document.getElementById('finishBtn').disabled = false; // allow finish at end
+        alert("Time is up! Please finish the exam.");
+        return;
+      }
+
+      const hrs = String(Math.floor(remaining / 3600)).padStart(2, '0');
+      const mins = String(Math.floor((remaining % 3600) / 60)).padStart(2, '0');
+      const secs = String(remaining % 60).padStart(2, '0');
+      remainingTimeEl.textContent = `${hrs}:${mins}:${secs}`;
+
+      // Enable finish button only after 60% time has passed
+      const minAllowed = examDuration * 0.1 * 60; // seconds
+      if (elapsed >= minAllowed) {
+        document.getElementById('finishBtn').disabled = false;
+      }
+    }, 1000);
+  }
+
+  function finishExam() {
+    clearInterval(timerInterval);
+    alert("Exam finished! Submitting responses...");
+    // send responses to backend
+    fetch('/exam/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ responses: userResponses })
+    }).then(res => res.json())
+      .then(data => {
+        console.log("Submission result:", data);
+        alert("Exam submitted successfully!");
+      });
+  }
+
 </script>
 
 

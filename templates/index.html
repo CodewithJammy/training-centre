@@ -67,6 +67,26 @@
             <p id="ageResult"></p>
          </div>
       </div>
+      <div id="examLoginPopup" class="popup">
+         <div class="popup-content">
+            <span class="close" onclick="closeExamLoginPopup()">&times;</span> 
+            <h2>Exam Portal Login</h2>
+            <form id="examLoginForm" method="POST" action="{{ url_for('userregister.exam_login') }}">
+                  {% if error %}
+                  <p style="color:red;">{{ error }}</p>
+                  {% endif %} 
+            <input type="email" name="email" placeholder="Email" required><br> 
+            <select name="course" required>
+                  <option value="">Select Course</option>
+                  <option value="Math">Math</option>
+                  <option value="Science">Science</option>
+                  <option value="English">English</option>
+            </select><br> 
+            <button type="submit">Enter Portal</button> 
+            </form>
+         </div>
+      </div>
+
       <script> function openAgePopup() { document.getElementById("agePopup").style.display = "block"; }
          function closeAgePopup() { 
            document.getElementById("agePopup").style.display = "none"; } 
@@ -86,7 +106,29 @@
                                   if (months < 0) { years--; months += 12; } 
                                   document.getElementById("ageResult").innerText = Exact Age: ${years} years, ${months} months, ${days} days;
                                  } 
+
+        
+            function openExamLoginPopup() {
+                 document.getElementById("examLoginPopup").style.display = "block";}
+            function closeExamLoginPopup() {
+                 document.getElementById("examLoginPopup").style.display = "none";}
+            document.getElementById("examLoginForm").addEventListener("submit", async function(e) {
+                 e.preventDefault();
+            const formData = new FormData(this);
+            const response = await fetch("{{ url_for('userregister.exam_login') }}", {
+                   method: "POST",
+                   body: formData
+               });
+
+           const result = await response.json();
+           if (result.success) {
+                window.location.href = "{{ url_for('exam.exam_home') }}";  // redirect if match} 
+           else {
+                alert(result.error);  // show error popup
+              } });
+
       </script>
+      
       <section id="courses" style="display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap;">
          <div style="flex: 1; min-width: 250px;">
             <h2>Our Courses</h2>

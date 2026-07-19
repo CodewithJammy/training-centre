@@ -5,7 +5,7 @@ from flask_cors import CORS
 from routes.exam_routes  import exam_bp
 from models.db_config import get_connection
 from routes.admin_routes import admin_bp
-
+from routes.register_routes import register_bp
 # Create Flask app once
 app = Flask(__name__)
 CORS(app)  # adds CORS headers automatically
@@ -20,6 +20,7 @@ app.secret_key = os.getenv("FLASK_SECRET_KEY")
 # Register the admin blueprint
 app.register_blueprint(admin_bp)
 app.register_blueprint(exam_bp)
+app.register_blueprint(register_bp)
 @app.route("/")
 def index():
     return render_template("index.html")
